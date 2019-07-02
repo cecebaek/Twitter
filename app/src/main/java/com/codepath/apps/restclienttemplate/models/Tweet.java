@@ -2,7 +2,10 @@ package com.codepath.apps.restclienttemplate.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+
+@Parcel // annotation indicates class is Parcelable
 public class Tweet {
 
     // list out all attributes
@@ -10,6 +13,8 @@ public class Tweet {
     public long uid; // database ID for the tweet
     public User user;
     public String createdAt;
+
+    public Tweet() {}
 
     // deserialize the data
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {

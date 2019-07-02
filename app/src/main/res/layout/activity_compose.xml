@@ -7,7 +7,7 @@
     tools:context=".ComposeActivity">
 
     <Button
-        android:id="@+id/btnSendTweet"
+        android:id="@+id/btnSend"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -18,10 +18,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etTweetInput2" />
+        app:layout_constraintTop_toBottomOf="@+id/tilTweetInput" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/etTweetInput2"
+        android:id="@+id/tilTweetInput"
         android:layout_width="398dp"
         android:layout_height="353dp"
         android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
         android:layout_marginBottom="8dp"
         app:counterEnabled="true"
         app:counterMaxLength="280"
-        app:layout_constraintBottom_toTopOf="@+id/btnSendTweet"
+        app:layout_constraintBottom_toTopOf="@+id/btnSend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

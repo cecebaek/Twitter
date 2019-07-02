@@ -2,12 +2,14 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -27,7 +29,7 @@ public class TimelineActivity extends AppCompatActivity {
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
 
-    public static final int TWEET_REQUEST_CODE = 20;
+    public static final int COMPOSE_TWEET_REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +120,21 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void composeMessage() {
-        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-        startActivityForResult(i, TWEET_REQUEST_CODE);
+        // open ComposeActivity to create a new tweet
+        Intent composeTweet = new Intent(this, ComposeActivity.class);
+        startActivityForResult(composeTweet, COMPOSE_TWEET_REQUEST_CODE);
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == COMPOSE_TWEET_REQUEST_CODE && resultCode == RESULT_OK) {
+            // TODO change getExtra part to Parceler
+            Tweet resultTweet = data.getParcelableExtra(ComposeActivity.RESULT_TWEET_KEY);
+            tweets.add(0, resultTweet);
+            tweetAdapter.notifyItemInserted(0);
+            rvTweets.scrollToPosition(0);
+            Toast.makeText(this, "Tweet post succeeded", Toast.LENGTH_LONG);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
