@@ -57,10 +57,8 @@ public class ComposeActivity extends AppCompatActivity {
 
                         // return result to calling activity
                         Intent resultData = new Intent();
-                        // THIS IS WRONG! TODO Use parceler
-//                        resultData.putExtra(RESULT_TWEET_KEY, resultTweet.toString());
+                        // user Parcel to return tweet to timeline
                         resultData.putExtra(RESULT_TWEET_KEY, Parcels.wrap(resultTweet));
-
                         setResult(RESULT_OK, resultData);
                         finish();
                     } catch (JSONException e)
