@@ -18,6 +18,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -135,11 +136,16 @@ public class TimelineActivity extends AppCompatActivity {
                 composeMessage();
                 return true;
             case R.id.miProfile:
-//                showProfileView();
+                showProfileView();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showProfileView() {
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
     }
 
     private void composeMessage() {
@@ -152,7 +158,7 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == COMPOSE_TWEET_REQUEST_CODE && resultCode == RESULT_OK) {
             // TODO change getExtra part to Parceler
-            Tweet resultTweet = data.getParcelableExtra(ComposeActivity.RESULT_TWEET_KEY);
+            Tweet resultTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(ComposeActivity.RESULT_TWEET_KEY));
             tweets.add(0, resultTweet);
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);
