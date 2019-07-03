@@ -44,8 +44,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // get the data according to position
-        Tweet tweet = mTweets.get(position);
-
+        final Tweet tweet = mTweets.get(position);
+        final ViewHolder holder2 = holder;
         // populate the views according to this data
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
@@ -95,8 +95,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         }
 
         return relativeDate;
-
-
     }
 
     // Clean all elements of the recycler

@@ -36,10 +36,11 @@
 
     <TextView
         android:id="@+id/tvBody"
-        android:layout_width="325dp"
-        android:layout_height="89dp"
+        android:layout_width="332dp"
+        android:layout_height="106dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Body"
         android:textColor="@color/night_text"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -64,4 +65,5 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/night_lighter_blue" />
+
 </android.support.constraint.ConstraintLayout>
