@@ -45,7 +45,8 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [ ] User can access their own profile
+  * [ ] User can see profile picture, name, screen name, # of followers, and # of followings
 
 ## Video Walkthrough
 
