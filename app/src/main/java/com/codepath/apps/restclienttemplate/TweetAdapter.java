@@ -1,8 +1,10 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +13,21 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import cz.msebera.android.httpclient.Header;
+
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
     private List<Tweet> mTweets;
     Context context;
+
+    private static TwitterClient client;
 
     // pass in the Tweets array in the constructor
     public TweetAdapter(List<Tweet> tweets) {
@@ -32,6 +39,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         context = parent.getContext();
+
+        client = TwitterApp.getRestClient(context);
+
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
@@ -53,6 +63,53 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvCreatedAt.setText(getRelativeTimeAgo(tweet.createdAt));
 
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+
+        holder.tvLikeCount.setText(String.valueOf(tweet.likeCount));
+        if (tweet.likeStatus)
+            holder.ivLikeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_vector_heart));
+        else
+            holder.ivLikeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_vector_heart_stroke));
+
+        final long uid = tweet.uid;
+
+
+        holder.ivLikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("TweetAdapter", "Like Button was CLICKED");
+                if (tweet.likeStatus) {
+                    client.unlikeTweet(uid, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            tweet.likeStatus = false;
+                            tweet.likeCount -= 1;
+                            holder2.ivLikeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_vector_heart_stroke));
+                            holder2.tvLikeCount.setText(String.valueOf(tweet.likeCount));
+                        }
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.e("TweetAdapter", "Failed to unlike tweet", error);
+                        }
+                    });
+                }
+                else {
+                    client.likeTweet(uid, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            tweet.likeStatus = true;
+                            tweet.likeCount += 1;
+                            holder2.ivLikeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_vector_heart));
+                            holder2.tvLikeCount.setText(String.valueOf(tweet.likeCount));
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.e("TweetAdapter", "Failed to like tweet", error);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -67,6 +124,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvCreatedAt;
+        public ImageView ivLikeBtn;
+        public TextView tvLikeCount;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -77,6 +137,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvCreatedAt = (TextView) itemView.findViewById(R.id.tvCreatedAt);
+            ivLikeBtn = (ImageView) itemView.findViewById(R.id.ivLikeBtn);
+            tvLikeCount = (TextView) itemView.findViewById(R.id.tvLikeCount);
         }
     }
 

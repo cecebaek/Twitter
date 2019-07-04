@@ -14,6 +14,9 @@ public class Tweet {
     public User user;
     public String createdAt;
 
+    public int likeCount;
+    public boolean likeStatus;
+
     public Tweet() {}
 
     // deserialize the data
@@ -25,6 +28,10 @@ public class Tweet {
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+
+        tweet.likeCount = jsonObject.getInt("favorite_count");
+        tweet.likeStatus = jsonObject.getBoolean("favorited");
+
         return tweet;
     }
 
