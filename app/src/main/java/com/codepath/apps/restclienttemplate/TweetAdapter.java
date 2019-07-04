@@ -56,6 +56,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         // get the data according to position
         final Tweet tweet = mTweets.get(position);
         final ViewHolder holder2 = holder;
+
         // populate the views according to this data
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
@@ -64,15 +65,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
 
+        final long uid = tweet.uid;
+
+        // set Like image according to Like Status (Liked or Not Liked)
         holder.tvLikeCount.setText(String.valueOf(tweet.likeCount));
         if (tweet.likeStatus)
             holder.ivLikeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_vector_heart));
         else
             holder.ivLikeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_vector_heart_stroke));
 
-        final long uid = tweet.uid;
-
-
+        // onClick for the Like button
         holder.ivLikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
