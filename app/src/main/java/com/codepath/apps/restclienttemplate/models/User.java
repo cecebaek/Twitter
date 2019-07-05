@@ -4,7 +4,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
-@Parcel
+/**
+ * <h1>User object</h1>
+ * The User class outlines the User object which is used to store information for each user.
+ * Each User object is comprised of their name, user ID, screeName (@name), and profile image url.
+ */
+
+@Parcel // annotation indicates class is Parcelable
 public class User {
 
     // list all the attributes

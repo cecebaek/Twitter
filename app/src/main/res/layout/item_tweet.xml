@@ -7,6 +7,20 @@
     android:layout_margin="5dp">
 
     <ImageView
+        android:id="@+id/ivRetweetBtn"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvRetweetCount"
+        app:layout_constraintTop_toBottomOf="@+id/tvBody"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+
+    <ImageView
         android:id="@+id/ivProfileImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -35,8 +49,8 @@
 
     <TextView
         android:id="@+id/tvBody"
-        android:layout_width="332dp"
-        android:layout_height="90dp"
+        android:layout_width="335dp"
+        android:layout_height="65dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -71,13 +85,12 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:tint="@android:color/white"
         android:clickable="true"
+        android:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvLikeCount"
-        app:layout_constraintStart_toStartOf="@+id/tvBody"
         app:layout_constraintTop_toBottomOf="@+id/tvBody"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_vector_heart_stroke" />
@@ -86,11 +99,21 @@
         android:id="@+id/tvLikeCount"
         android:layout_width="59dp"
         android:layout_height="19dp"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:text="Likes"
         android:textColor="@android:color/white"
-        app:layout_constraintStart_toEndOf="@+id/ivLikeBtn"
+        app:layout_constraintEnd_toEndOf="@+id/tvBody"
+        app:layout_constraintTop_toBottomOf="@+id/tvBody" />
+
+    <TextView
+        android:id="@+id/tvRetweetCount"
+        android:layout_width="59dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:text="Retweets"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="@+id/ivLikeBtn"
         app:layout_constraintTop_toBottomOf="@+id/tvBody" />
 
 </android.support.constraint.ConstraintLayout>

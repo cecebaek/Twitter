@@ -1032,6 +1032,7 @@ drawable ic_launcher_foreground
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable ic_reply_white_24dp
 drawable ic_vector_close
 drawable ic_vector_compose
 drawable ic_vector_compose_dm
@@ -1173,7 +1174,7 @@ id italic
 id item_touch_helper_previous_elevation
 id ivLikeBtn
 id ivProfileImage
-id ivProfilePic
+id ivRetweetBtn
 id labeled
 id largeLabel
 id left
@@ -1184,8 +1185,8 @@ id list_item
 id masked
 id media_actions
 id message
+id miActionProgress
 id miCompose
-id miProfile
 id middle
 id mini
 id mtrl_child_content_container
@@ -1204,6 +1205,7 @@ id parallax
 id parent
 id parentPanel
 id parent_matrix
+id pbProgressAction
 id percent
 id pin
 id progress_circular
@@ -1285,11 +1287,8 @@ id transition_scene_layoutid_cache
 id transition_transform
 id tvBody
 id tvCreatedAt
-id tvFollowersNum
-id tvFollowingNum
 id tvLikeCount
-id tvName
-id tvScreenName
+id tvRetweetCount
 id tvUserName
 id uniform
 id unlabeled
@@ -1348,9 +1347,10 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout action_view_progress
 layout activity_compose
 layout activity_login
-layout activity_profile
+layout activity_reply
 layout activity_timeline
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog

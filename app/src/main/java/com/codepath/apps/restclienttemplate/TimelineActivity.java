@@ -26,17 +26,16 @@ import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
 
+    // set instance variable
     TwitterClient client;
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
+    MenuItem miActionProgressItem;  // instance of the progress action-view
 
     private SwipeRefreshLayout swipeContainer;
 
     public static final int COMPOSE_TWEET_REQUEST_CODE = 20;
-
-    // Instance of the progress action-view
-    MenuItem miActionProgressItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +54,6 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
-
-//        // show the timeline
-//        populateTimeline();
-
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -73,7 +68,6 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
     }
 
     // get tweet data and put them on the timeline
@@ -86,7 +80,6 @@ public class TimelineActivity extends AppCompatActivity {
             }
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                Log.d("TwitterClient", response.toString());
                 // iterate through the JSON array
                 // for each entry, deserialize the JSON object
                 for (int i = 0; i < response.length(); i++) {
@@ -182,7 +175,7 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Store instance of the menu item containing progress
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
-        // populate the timelin
+        // populate the timeline
         populateTimeline();
         // Return to finish
         return super.onPrepareOptionsMenu(menu);

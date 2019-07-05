@@ -8,10 +8,10 @@
         android:tint="@android:color/white">
     </item>
     <item
-        android:id="@+id/miProfile"
-        android:icon="@drawable/ic_vector_person"
-        app:showAsAction="ifRoom|withText"
-        android:title="Profile"
-        android:tint="@android:color/white">
-    </item>
+        android:id="@+id/miActionProgress"
+        android:title="Loading..."
+        android:visible="false"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        app:actionLayout="@layout/action_view_progress" />
 </menu>

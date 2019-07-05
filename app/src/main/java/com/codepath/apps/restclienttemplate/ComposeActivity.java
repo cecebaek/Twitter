@@ -50,11 +50,9 @@ public class ComposeActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if (statusCode == 200) {
                     try {
-                        Log.i("ComposeActivity", "Tweet sent!");
                         // parsing response
                         JSONObject responseJson = new JSONObject(new String(responseBody));
                         Tweet resultTweet = Tweet.fromJSON(responseJson);
-
                         // return result to calling activity
                         Intent resultData = new Intent();
                         // user Parcel to return tweet to timeline
