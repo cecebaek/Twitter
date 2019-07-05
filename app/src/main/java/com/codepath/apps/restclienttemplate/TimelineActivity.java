@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -32,11 +31,12 @@ public class TimelineActivity extends AppCompatActivity {
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
 
-    User currentUser;
-
     private SwipeRefreshLayout swipeContainer;
 
     public static final int COMPOSE_TWEET_REQUEST_CODE = 20;
+
+    // Instance of the progress action-view
+    MenuItem miActionProgressItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +55,9 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
-        // show the timeline
-        populateTimeline();
+
+//        // show the timeline
+//        populateTimeline();
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -64,9 +65,6 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 fetchTimelineAsync();
             }
         });
@@ -78,7 +76,9 @@ public class TimelineActivity extends AppCompatActivity {
 
     }
 
+    // get tweet data and put them on the timeline
     private void populateTimeline() {
+        showProgressBar();
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -90,36 +90,40 @@ public class TimelineActivity extends AppCompatActivity {
                 // iterate through the JSON array
                 // for each entry, deserialize the JSON object
                 for (int i = 0; i < response.length(); i++) {
-                    // convert each object to a Tweet model
-                    // add that Tweet model to our data source
-                    // notify the adapter that we've added an item
                     Tweet tweet = null;
                     try {
+                        // convert each object to a Tweet model
                         tweet = Tweet.fromJSON(response.getJSONObject(i));
+                        // add that Tweet model to our data source
                         tweets.add(tweet);
+                        // notify the adapter that we've added an item
                         tweetAdapter.notifyItemInserted(tweets.size() - 1);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                hideProgressBar();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
+                hideProgressBar();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
+                hideProgressBar();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
+                hideProgressBar();
             }
         });
     }
@@ -138,21 +142,13 @@ public class TimelineActivity extends AppCompatActivity {
             case R.id.miCompose:
                 composeMessage();
                 return true;
-            case R.id.miProfile:
-                showProfileView();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void showProfileView() {
-        Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
-    }
-
+    // open ComposeActivity to create a new tweet
     private void composeMessage() {
-        // open ComposeActivity to create a new tweet
         Intent composeTweet = new Intent(this, ComposeActivity.class);
         startActivityForResult(composeTweet, COMPOSE_TWEET_REQUEST_CODE);
     }
@@ -170,10 +166,35 @@ public class TimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    // get new timeline upon pulldown refresh
     public void fetchTimelineAsync() {
+        // clear the timeline
         tweetAdapter.clear();
+        // regenerate the timeline() with most recent data
         populateTimeline();
+        // turn off the refresh animation
         swipeContainer.setRefreshing(false);
     }
 
+
+    // set up progress bar for loading timeline
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        // populate the timelin
+        populateTimeline();
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void showProgressBar() {
+        // Show progress item
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
+    }
 }
